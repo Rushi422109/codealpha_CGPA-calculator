@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CGPA Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>CGPA Calculator</h1>
+        <form id="cgpaForm">
+            <label for="semesters">Number of Semesters:</label>
+            <input type="number" id="semesters" name="semesters" min="1" max="12" required><br><br>
+
+            <div id="gradeInputs"></div>
+
+            <button type="submit">Calculate CGPA</button>
+        </form>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const form = document.getElementById('cgpaForm');
+        const gradeInputs = document.getElementById('gradeInputs');
+
+        document.getElementById('semesters').addEventListener('input', function () {
+            const num = parseInt(this.value);
+            gradeInputs.innerHTML = '';
+            for (let i = 1; i <= num; i++) {
+                gradeInputs.innerHTML += `
+                    <label>SGPA for Semester ${i}:</label>
+                    <input type="number" step="0.01" min="0" max="10" name="sgpa${i}" required><br><br>
+                `;
+            }
+        });
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const inputs = form.querySelectorAll('input[name^="sgpa"]');
+            let sum = 0;
+            inputs.forEach(input => {
+                sum += parseFloat(input.value);
+            });
+            const cgpa = (sum / inputs.length).toFixed(2);
+            document.getElementById('result').innerText = `Your CGPA is: ${cgpa}`;
+        });
+    </script>
+</body>
+</html>
